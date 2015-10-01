@@ -27,12 +27,35 @@ class ChefTest < ActiveSupport::TestCase
   
   test "email should be present" do
    @chef.email = " "
-   assert_not @ched.valid?
+   assert_not @chef.valid?
   end
   
   test "email length should be within bounds" do
     @chef.email = "x" *101+"@example.com"
     assert_not @chef.valid?
+  end
+  
+  test "email address should be unique" do
+    dup_chef = @chef.dup
+    dup_chef.email = @chef.email.upcase
+    @chef.save
+    assert_not dup_chef.valid?
+  end
+  
+  test "email validation should accept valid addresses" do
+    valid_addresses= %w[user@eee.com R_TDD-DS@eee.hello.org user@example.com first.last@eee.au laura+joe@monk.com]
+    valid_addresses.each do |va|
+      @chef.email = va
+      assert @chef.valid?,'#{va.inspect} should be valid'
+    end
+  end
+  
+  test "email validation should reject invalid addresses" do
+    invalid_addresses = %w[user@ecamiple,com user_at_ee.org user.name@example. eee@i_am_.com foo@eee+aar.com]
+    invalid_addresses.each do |ia|
+      @chef.email = ia
+      assert_not @chef.valid?, '#{ia.inspect} should be valid'
+    end
   end
   
   
