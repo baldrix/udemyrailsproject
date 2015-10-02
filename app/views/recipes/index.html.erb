@@ -6,7 +6,8 @@
     
     <div class="col-md-2" >
       <section class="chef_info center">
-        
+        <%= gravatar_for recipe.chef,size:100 %>
+        <h5>Chef Name: <%= recipe.chef.chefname %></h5>
       </section>
     </div>
     <div class="col-lg-8 well">
@@ -18,5 +19,5 @@
     </div>
     
   </div>
-
+  <hr></hr>
 <% end %>
